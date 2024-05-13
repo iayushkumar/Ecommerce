@@ -2,9 +2,39 @@ import React,{useState,useEffect} from 'react'
 import { FaAddressCard } from "react-icons/fa";
 import Addprod from './Addprod';
 import Address from './Address';
+import axios from 'axios';
 
 const Profile = () => {
   const [render, setrender] = useState('Address')
+  const [userInfo, setuserInfo] = useState({});
+
+const fetchuser=async()=>
+  {
+   const response=await axios.get('http://localhost:3000/Auth//signinfo',
+
+  {
+    headers: {
+      'Content-Type': 'application/json',
+      'auth-token': localStorage.getItem('token')
+  }
+  }
+   )
+    const data=await response.data;
+    console.log(data,"user inf");
+    setuserInfo(data);
+  
+
+  }
+
+useEffect(() => {
+  fetchuser();
+}, [])
+
+useEffect(() => {
+  console.log(userInfo);
+}, [userInfo])
+
+
   return (
     <div className='flex flex-col sm:flex-row'>
   
@@ -14,8 +44,8 @@ const Profile = () => {
       aria-label="Sidebar"
     >
       <div className="h-full px-3 py-4 overflow-y-auto bg-gray-200 dark:bg-gray-800">
-        <ul className="space-y-2 font-medium">      
-          <li onClick={()=>setrender('addprod')}>
+        <ul className="space-y-2 font-medium">     
+        {userInfo.role==='admin'?( <li onClick={()=>setrender('addprod')}>
             <a
               href="#"
               className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 group"
@@ -31,7 +61,8 @@ const Profile = () => {
               </svg>
               <span className="flex-1 ms-3 whitespace-nowrap">Add Products</span>
             </a>
-          </li>
+          </li>):null} 
+         
           <li onClick={()=>setrender('Address')}>
             <a
               href="#"

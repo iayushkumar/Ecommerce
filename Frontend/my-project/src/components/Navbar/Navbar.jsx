@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 const Navbar = () => {
   const navigate=useNavigate();
   const [userInfo, setuserInfo] = useState({});
+  const [button, setbutton] = useState(false);
  const handlesignout=()=>
  {
   localStorage.removeItem('token')
@@ -42,24 +43,27 @@ useEffect(() => {
 }, [userInfo])
 
 
+
+
   return (
-    <nav className="bg-teal-50 border-gray-200 dark:bg-gray-900">
+    <nav className="bg-teal-50 border-gray-200 dark:bg-gray-900 ">
     <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-     <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse w-40">
+     <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse w-40 h-10">
       
         {localStorage.getItem('user')==='true'?(<>
 
           <Link to ="/Cart">
-     <div className='cart h-30 w-30 '>
-        <FaShoppingCart className='h-6 w-6 mr-5'/>
-        </div>
-     </Link> 
+          <div className='cart h-30 w-30 '>
+              <FaShoppingCart className='h-6 w-6 mr-5'/>
+              </div>
+           </Link> 
 
           <button
           type="button"
           className="flex text-sm mr-5 bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
           id="user-menu-button"
-          aria-expanded="false"
+          // aria-expanded="false"
+          onClick={()=>setbutton(!button)}
           data-dropdown-toggle="user-dropdown"
           data-dropdown-placement="bottom"
         >
@@ -84,68 +88,47 @@ useEffect(() => {
         }
       
         {/* Dropdown menu */}
-        <div
-          className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
-          id="user-dropdown"
-        >
-          <div className="px-4 py-3">
-            <span className="block text-sm text-gray-900 dark:text-white">
-              {userInfo.name}
-            </span>
-            <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
-            {userInfo.email}
-            </span>
-          </div>
-          <ul className="py-2" aria-labelledby="user-menu-button">
-            <Link to="/profile">
-            <li>
-              <a
-                href="#"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-              >
-                My profile
-              </a>
-            </li>
-            </Link>
-           
-           
-            <li>
-              <a
-                href="#"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-             onClick={handlesignout}
-             >
-                Sign out
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        {/* Navbar section  */}
-        <button
-          data-collapse-toggle="navbar-user"
-          type="button"
-          className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-          aria-controls="navbar-user"
-          aria-expanded="false"
-        >
-          <span className="sr-only">Open main menu</span>
-          <svg
-            className="w-5 h-5"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 17 14"
+        {button ? (
+  <div
+    // className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
+    className={`z-50 ${button ? '' : 'hidden'} mt-20 my-5 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600`}
+    id="user-dropdown"
+  >
+    <div className="px-4 py-3">
+      <span className="block text-sm text-gray-900 dark:text-white">
+        {userInfo.name}
+      </span>
+      <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
+        {userInfo.email}
+      </span>
+    </div>
+    <ul className="py-2" aria-labelledby="user-menu-button">
+      <Link to="/profile">
+        <li>
+          <a
+            href="#"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
           >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M1 1h15M1 7h15M1 13h15"
-            />
-          </svg>
-        </button>
+            My profile
+          </a>
+        </li>
+      </Link>
+      <li>
+        <a
+          href="#"
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+          onClick={handlesignout}
+        >
+          Sign out
+        </a>
+      </li>
+    </ul>
+  </div>
+) : null}
+
+      
+
+     
       </div>
       <div
         className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
